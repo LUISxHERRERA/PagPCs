@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nodo Computación – Equipos con garantía verificable</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{--bg:#ffffff;--panel:#f3f8fc;--ink:#0a0a0a;--mute:#4b5a66;--line:#d3e0ea;--acc:#0e7bc2;--acc-ink:#fff;--warn:#a85f00;--sky:#d6ecf9;--sky2:#4aa8e0;
+--sans:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a0a0a;--panel:#141a20;--ink:#ffffff;--mute:#9fb0be;--line:#25313b;--acc:#4db8f0;--acc-ink:#04131c;--warn:#f0b25a;--sky:#10293a;--sky2:#4db8f0}}
+:root[data-theme="dark"]{--bg:#0a0a0a;--panel:#141a20;--ink:#ffffff;--mute:#9fb0be;--line:#25313b;--acc:#4db8f0;--acc-ink:#04131c;--warn:#f0b25a;--sky:#10293a;--sky2:#4db8f0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--sans)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+header.top{display:flex;align-items:center;gap:16px;padding:16px 0;flex-wrap:wrap}
+.logo{font-weight:800;font-size:20px;letter-spacing:-.01em;margin-right:auto}
+.logo span{color:var(--acc)}
+input,button,select{font:inherit;color:inherit}
+input{background:var(--panel);border:1.5px solid var(--line);border-radius:6px;padding:10px 12px;min-width:0}
+input:focus-visible,button:focus-visible,dialog:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.btn{background:var(--acc);color:var(--acc-ink);border:0;border-radius:6px;padding:10px 16px;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.search{flex:1 1 220px;max-width:340px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center;padding:36px 0 40px}
+@media (max-width:760px){.hero{grid-template-columns:1fr}}
+h1{font-size:clamp(30px,5vw,50px);line-height:1.05;letter-spacing:-.02em;margin:0 0 14px;font-weight:800;max-width:15ch}
+.hero p{color:var(--mute);margin:0 0 18px;max-width:46ch}
+.verify{display:flex;gap:8px;flex-wrap:wrap}
+.verify input{flex:1 1 220px;font-family:var(--mono);text-transform:uppercase}
+.tag{background:var(--panel);border:1.5px solid var(--ink);border-radius:8px;padding:18px;font-family:var(--mono);font-size:13px}
+.tag dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px}
+.tag dt{color:var(--mute)}.tag dd{margin:0;font-weight:500;word-break:break-all}
+.tag .ok{color:var(--acc);font-weight:500}.tag .bad{color:var(--warn);font-weight:500}
+.tag h3{font:700 15px var(--sans);margin:0 0 10px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 20px}
+.chip{border:1.5px solid var(--line);background:transparent;border-radius:999px;padding:6px 14px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;padding-bottom:48px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;display:flex;flex-direction:column}
+.card .code{font:500 12px var(--mono);padding:10px 14px;border-bottom:1px dashed var(--line);display:flex;justify-content:space-between;gap:8px;color:var(--mute)}
+.card .body{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card h3{margin:0;font-size:17px;line-height:1.25}
+.brand{color:var(--mute);font-size:14px}
+.price{font-size:22px;font-weight:800;margin-top:auto}
+.gar{font-size:13px;color:var(--acc);font-weight:700}
+.row{display:flex;gap:8px;margin-top:8px}.row .btn{flex:1}
+.stock{font-size:13px;color:var(--mute)}.stock.low{color:var(--warn)}
+dialog{border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);padding:0;width:min(560px,94vw);max-height:90vh}
+dialog::backdrop{background:rgba(10,16,22,.55)}
+.dlg{padding:22px}.dlg h2{margin:0 0 4px}
+.specs{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+.specs td{padding:7px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.specs td:first-child{color:var(--mute);width:42%}
+.specs .m{font-family:var(--mono);font-size:13px}
+.cartlist{list-style:none;margin:0 0 14px;padding:0}
+.cartlist li{display:grid;grid-template-columns:1fr auto;gap:4px 10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+.cartlist .m{font:12px var(--mono);color:var(--mute)}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:28px;height:28px;border:1.5px solid var(--line);background:transparent;border-radius:6px;cursor:pointer}
+form.co{display:grid;gap:10px;margin-top:14px}
+form.co label{display:grid;gap:4px;font-size:14px}
+.total{display:flex;justify-content:space-between;font-weight:800;font-size:18px;margin:10px 0}
+.note{font-size:13px;color:var(--mute)}
+.empty{color:var(--mute);padding:14px 0}
+footer{border-top:1px solid var(--line);padding:22px 0;color:var(--mute);font-size:14px}
+@media (prefers-reduced-motion:no-preference){.btn{transition:filter .15s}.btn:hover{filter:brightness(1.08)}}
+
+.card,dialog,.tag{border-radius:var(--r,8px)}
+.btn,input,textarea,select{border-radius:calc(var(--r,8px)*.6)}
+.grid{grid-template-columns:repeat(auto-fill,minmax(min(var(--cw,250px),100%),1fr))}
+body.nocodes .card .code{display:none}body.nostock .stock{display:none}
+textarea,select{background:var(--panel);border:1.5px solid var(--line);padding:10px 12px;min-width:0;width:100%;font:inherit;color:inherit}
+.dlg input:not([type=checkbox]):not([type=range]){width:100%}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.pane{display:none;gap:12px}.pane.on{display:grid}
+.pane label{display:grid;gap:4px;font-size:14px}.pane label.inl{display:flex;align-items:center;gap:8px}
+.pane input[type=color]{padding:2px;height:40px}
+.sws{display:flex;gap:8px;flex-wrap:wrap}
+.sw{width:32px;height:32px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cl{list-style:none;margin:0;padding:0;font-size:14px}
+.cl li{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}
+
+.card .code{background:var(--ink);color:var(--bg);border:0}
+.img{background:linear-gradient(160deg,var(--sky),var(--panel));padding:14px;display:grid;place-items:center}
+.img svg{width:100%;max-width:200px;height:auto}
+.img.big{border:1px solid var(--line);border-radius:var(--r,8px);padding:18px}
+.img.big svg{max-width:100%}
+.img .f{fill:var(--panel);stroke:var(--ink);stroke-width:2.5}
+.img .s{fill:var(--sky2);stroke:var(--ink);stroke-width:2}
+.img .k{fill:var(--ink)}
+.img .l{fill:none;stroke:var(--ink);stroke-width:2.5;stroke-linecap:round}
+.img .d{fill:none;stroke:var(--sky2);stroke-width:7;stroke-dasharray:8 4}
+footer{background:var(--ink);color:var(--bg);border:0;padding:22px;border-radius:var(--r,8px);margin-bottom:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="logo" id="logo">Nodo Computación</div>
+  <input class="search" id="q" type="search" placeholder="Buscar por nombre, marca o código" aria-label="Buscar productos">
+  <button class="btn ghost" id="openCfg">Personalizar</button>
+  <button class="btn ghost" id="openCart">Carrito (<span id="cnt">0</span>)</button>
+</header>
+
+<section class="hero">
+  <div>
+    <h1 id="hTitle">Equipos con garantía que puedes verificar</h1>
+    <p id="hSub">Cada producto tiene su código de equipo y su código de garantía. Escribe el código de tu garantía y consulta su estado al instante.</p>
+    <form class="verify" id="vf">
+      <input id="vcode" placeholder="Ej. GAR-LAP-0001" aria-label="Código de garantía" autocomplete="off">
+      <button class="btn" type="submit">Verificar garantía</button>
+    </form>
+  </div>
+  <div>
+  <div class="img big" id="heroImg" style="margin-bottom:14px"></div>
+  <div class="tag" id="vres" aria-live="polite">
+    <h3>Resultado de la verificación</h3>
+    <div class="note">Aquí verás el equipo, los meses de garantía y la fecha de vencimiento.</div>
+  </div>
+  </div>
+</section>
+
+<div class="chips" id="chips" role="group" aria-label="Categorías"></div>
+<main class="grid" id="grid"></main>
+<footer id="foot">Datos de ejemplo. Para operar la tienda se conecta a una base de datos y a una pasarela de pago.</footer>
+</div>
+
+<dialog id="dlg" aria-label="Detalle del producto"><div class="dlg" id="dbody"></div></dialog>
+<dialog id="cartDlg" aria-label="Carrito de compras"><div class="dlg" id="cbody"></div></dialog>
+<dialog id="cfgDlg" aria-label="Personalizar tienda"><div class="dlg">
+<h2>Personalizar tienda</h2>
+<div class="tabs"><button class="chip" aria-pressed="true" data-tab="t1">Marca</button><button class="chip" aria-pressed="false" data-tab="t2">Diseño</button><button class="chip" aria-pressed="false" data-tab="t3">Ventas</button><button class="chip" aria-pressed="false" data-tab="t4">Productos</button></div>
+<div class="pane on" id="t1">
+<label>Nombre de la tienda<input data-k="name" maxlength="40"></label>
+<label>Titular de portada<input data-k="title" maxlength="90"></label>
+<label>Subtítulo<textarea data-k="sub" rows="3" maxlength="240"></textarea></label>
+<label>Texto del pie de página<input data-k="foot" maxlength="160"></label>
+<label>Logo (imagen)<input type="file" id="logoFile" accept="image/*"></label>
+<button class="btn ghost" data-nologo="1">Quitar logo</button>
+</div>
+<div class="pane" id="t2">
+<div class="sws"><button class="sw" data-sw="#0e7bc2" style="background:#0e7bc2" aria-label="Celeste"></button><button class="sw" data-sw="#0a0a0a" style="background:#0a0a0a" aria-label="Negro"></button><button class="sw" data-sw="#c2410c" style="background:#c2410c" aria-label="Naranja"></button><button class="sw" data-sw="#7c3aed" style="background:#7c3aed" aria-label="Violeta"></button><button class="sw" data-sw="#be123c" style="background:#be123c" aria-label="Rojo"></button></div>
+<label>Color de acento personalizado<input type="color" data-k="acc"></label>
+<div class="two"><label>Tema<select data-k="theme"><option value="auto">Automático</option><option value="light">Claro</option><option value="dark">Oscuro</option></select></label>
+<label>Tipografía<select data-k="font"><option value="Archivo">Moderna</option><option value="Serif">Con serifa</option><option value="Sistema">Del sistema</option><option value="Mono">Técnica</option></select></label></div>
+<label>Esquinas redondeadas<input type="range" data-k="r" min="0" max="24"></label>
+<label>Tamaño de las tarjetas<input type="range" data-k="cw" min="200" max="380" step="10"></label>
+<label class="inl"><input type="checkbox" data-k="codes"> Mostrar el código de equipo en las tarjetas</label>
+<label class="inl"><input type="checkbox" data-k="stock"> Mostrar el stock en las tarjetas</label>
+</div>
+<div class="pane" id="t3">
+<div class="two"><label>Símbolo de moneda<input data-k="cur" maxlength="6"></label><label>Impuesto (%)<input type="number" data-k="tax" min="0" max="50" step="0.5"></label></div>
+<label>WhatsApp para recibir pedidos<input data-k="wa" inputmode="tel" placeholder="Código de país y número, sin signos"></label>
+<p class="note">Con WhatsApp configurado, el cliente ve un botón para enviarte su pedido con los códigos de garantía.</p>
+</div>
+<div class="pane" id="t4">
+<label>Nombre del producto<input id="pn"></label>
+<div class="two"><label>Marca<input id="pb"></label><label>Categoría<input id="pc" list="cats" placeholder="Ej. Laptops"></label></div>
+<datalist id="cats"></datalist>
+<div class="two"><label>Precio<input id="pp" type="number" min="0" step="0.01"></label><label>Stock<input id="ps" type="number" min="0" value="1"></label></div>
+<label>Garantía (meses)<input id="pg" type="number" min="0" value="12"></label>
+<label>Especificaciones, una por línea (Etiqueta: valor)<textarea id="px" rows="3"></textarea></label>
+<button class="btn" data-addp="1">Agregar producto</button><div class="note" id="pmsg" aria-live="polite"></div>
+<ul class="cl" id="cl"></ul>
+</div>
+<div class="row" style="margin-top:14px"><button class="btn ghost" data-reset="1">Restablecer diseño</button><button class="btn" data-close="cfgDlg">Listo</button></div>
+</div></dialog>
+
+<script>
+var MONEDA='$', MESES_FMT={year:'numeric',month:'long',day:'numeric'};
+var P=[
+{id:1,cat:'Laptops',name:'ThinkPad E14 Ryzen 5',brand:'Lenovo',price:780,stock:8,gar:12,eq:'EQ-LAP-0001',gc:'GAR-LAP-0001',sku:'LEN-E14-R5',specs:[['Procesador','AMD Ryzen 5 7530U'],['Memoria','16 GB DDR4'],['Almacenamiento','SSD 512 GB'],['Pantalla','14" Full HD']]},
+{id:2,cat:'Laptops',name:'Vivobook 15 Core i5',brand:'ASUS',price:640,stock:5,gar:12,eq:'EQ-LAP-0002',gc:'GAR-LAP-0002',sku:'ASU-VB15-I5',specs:[['Procesador','Intel Core i5-1235U'],['Memoria','8 GB DDR4'],['Almacenamiento','SSD 512 GB'],['Pantalla','15.6" Full HD']]},
+{id:3,cat:'Escritorio',name:'PC Atlas i5 16 GB',brand:'Nodo',price:720,stock:4,gar:24,eq:'EQ-DES-0001',gc:'GAR-DES-0001',sku:'NOD-ATL-I5',specs:[['Procesador','Intel Core i5-12400'],['Memoria','16 GB DDR4'],['Almacenamiento','SSD 1 TB'],['Fuente','500 W 80+']]},
+{id:4,cat:'Componentes',name:'Ryzen 5 5600',brand:'AMD',price:190,stock:14,gar:12,eq:'EQ-CPU-0001',gc:'GAR-CPU-0001',sku:'AMD-5600',specs:[['Núcleos / hilos','6 / 12'],['Zócalo','AM4'],['Frecuencia','hasta 4.4 GHz']]},
+{id:5,cat:'Componentes',name:'GeForce RTX 4060 8 GB',brand:'NVIDIA',price:320,stock:3,gar:12,eq:'EQ-GPU-0001',gc:'GAR-GPU-0001',sku:'NV-4060-8',specs:[['Memoria de video','8 GB GDDR6'],['Conexión','PCIe 4.0 x8'],['Salidas','HDMI 2.1, 3× DP']]},
+{id:6,cat:'Componentes',name:'Fury 16 GB DDR4 3200',brand:'Kingston',price:45,stock:30,gar:36,eq:'EQ-RAM-0001',gc:'GAR-RAM-0001',sku:'KNG-F16-3200',specs:[['Capacidad','16 GB (1×16)'],['Velocidad','3200 MHz'],['Latencia','CL16']]},
+{id:7,cat:'Componentes',name:'SSD 980 1 TB NVMe',brand:'Samsung',price:85,stock:20,gar:36,eq:'EQ-SSD-0001',gc:'GAR-SSD-0001',sku:'SAM-980-1T',specs:[['Capacidad','1 TB'],['Interfaz','NVMe PCIe 3.0'],['Lectura','hasta 3500 MB/s']]},
+{id:8,cat:'Periféricos',name:'Monitor 24" IPS 100 Hz',brand:'LG',price:140,stock:9,gar:12,eq:'EQ-MON-0001',gc:'GAR-MON-0001',sku:'LG-24IPS',specs:[['Panel','IPS 24" Full HD'],['Frecuencia','100 Hz'],['Entradas','HDMI, VGA']]},
+{id:9,cat:'Periféricos',name:'Teclado mecánico Kumara',brand:'Redragon',price:38,stock:2,gar:6,eq:'EQ-TEC-0001',gc:'GAR-TEC-0001',sku:'RED-K552',specs:[['Switches','Rojos'],['Distribución','TKL 87 teclas'],['Conexión','USB']]},
+{id:10,cat:'Redes',name:'Router Archer AX1800',brand:'TP-Link',price:70,stock:11,gar:24,eq:'EQ-RED-0001',gc:'GAR-RED-0001',sku:'TPL-AX1800',specs:[['Estándar','Wi-Fi 6'],['Velocidad','1800 Mbps'],['Puertos','4× Gigabit LAN']]}
+];
+var cart={}, cat='Todos', q='', orders=[];
+try{orders=JSON.parse(localStorage.getItem('nodo_pedidos')||'[]')}catch(e){orders=[]}
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function money(n){return MONEDA+n.toLocaleString('es',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function byId(id){return P.filter(function(p){return p.id===id})[0]}
+function stockTxt(p){return p.stock<=3?'<span class="stock low">Quedan '+p.stock+'</span>':'<span class="stock">En stock: '+p.stock+'</span>'}
+
+function renderChips(){
+  var cats=['Todos'].concat(P.map(function(p){return p.cat}).filter(function(c,i,a){return a.indexOf(c)===i}));
+  $('chips').innerHTML=cats.map(function(c){return '<button class="chip" aria-pressed="'+(c===cat)+'" data-c="'+esc(c)+'">'+esc(c)+'</button>'}).join('');
+}
+function renderGrid(){
+  var t=q.toLowerCase();
+  var list=P.filter(function(p){return (cat==='Todos'||p.cat===cat)&&(!t||(p.name+' '+p.brand+' '+p.eq+' '+p.gc+' '+p.sku).toLowerCase().indexOf(t)>-1)});
+  $('grid').innerHTML=list.length?list.map(function(p){return '<article class="card"><div class="code"><span>'+p.eq+'</span><span>'+p.cat+'</span></div><div class="img">'+art(p)+'</div><div class="body"><div class="brand">'+esc(p.brand)+'</div><h3>'+esc(p.name)+'</h3><div class="gar">Garantía de '+p.gar+' meses</div>'+stockTxt(p)+'<div class="price">'+money(p.price)+'</div><div class="row"><button class="btn ghost" data-d="'+p.id+'">Ver detalle</button><button class="btn" data-a="'+p.id+'">Agregar</button></div></div></article>'}).join(''):'<p class="empty">No encontramos productos con esa búsqueda. Prueba con otra palabra o un código.</p>';
+}
+function openDetail(id){
+  var p=byId(id);
+  $('dbody').innerHTML='<div class="img" style="margin-bottom:12px;border-radius:var(--r,8px)">'+art(p)+'</div><h2>'+esc(p.name)+'</h2><div class="brand">'+esc(p.brand)+' · '+p.cat+'</div><table class="specs"><tr><td>Código de equipo</td><td class="m">'+p.eq+'</td></tr><tr><td>Código de garantía</td><td class="m">'+p.gc+'</td></tr><tr><td>Garantía</td><td>'+p.gar+' meses desde la fecha de compra</td></tr><tr><td>SKU</td><td class="m">'+p.sku+'</td></tr>'+p.specs.map(function(s){return '<tr><td>'+s[0]+'</td><td>'+esc(s[1])+'</td></tr>'}).join('')+'<tr><td>Disponibilidad</td><td>'+p.stock+' unidades</td></tr></table><p class="note">Al comprar, cada unidad recibe su propio código de garantía único.</p><div class="total"><span>'+money(p.price)+'</span></div><div class="row"><button class="btn ghost" data-close="dlg">Cerrar</button><button class="btn" data-a="'+p.id+'" data-close="dlg">Agregar al carrito</button></div>';
+  $('dlg').showModal();
+}
+function count(){return Object.keys(cart).reduce(function(a,k){return a+cart[k]},0)}
+function total(){return Object.keys(cart).reduce(function(a,k){return a+cart[k]*byId(+k).price},0)}
+function renderCart(){
+  $('cnt').textContent=count();
+  var ks=Object.keys(cart);
+  if(!ks.length){$('cbody').innerHTML='<h2>Carrito</h2><p class="empty">Tu carrito está vacío. Agrega un producto para continuar.</p><div class="row"><button class="btn ghost" data-close="cartDlg">Seguir comprando</button></div>';return}
+  $('cbody').innerHTML='<h2>Carrito</h2><ul class="cartlist">'+ks.map(function(k){var p=byId(+k);return '<li><div><strong>'+esc(p.name)+'</strong><div class="m">'+p.eq+' · '+p.gar+' meses de garantía</div></div><div>'+money(p.price*cart[k])+'</div><div class="qty"><button data-m="'+k+'" aria-label="Quitar una unidad">−</button>'+cart[k]+'<button data-p="'+k+'" aria-label="Agregar una unidad">+</button></div><div></div></li>'}).join('')+'</ul>'+totals()+'<form class="co" id="co"><label>Nombre completo<input name="n" required autocomplete="name"></label><label>Correo electrónico<input name="e" type="email" required autocomplete="email"></label><label>Teléfono<input name="t" type="tel" required autocomplete="tel"></label><div class="row"><button class="btn ghost" type="button" data-close="cartDlg">Seguir comprando</button><button class="btn" type="submit">Confirmar pedido</button></div></form>';
+}
+function add(id,d){
+  var p=byId(id),n=(cart[id]||0)+d;
+  if(n<=0)delete cart[id];else if(n<=p.stock)cart[id]=n;
+  renderCart();
+}
+function rnd(){var s='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',r='';for(var i=0;i<4;i++)r+=s[Math.floor(Math.random()*s.length)];return r}
+function checkout(f){
+  var d=new Date(),items=Object.keys(cart).map(function(k){var p=byId(+k),u=[];for(var i=0;i<cart[k];i++)u.push(p.gc+'-'+rnd());return {id:p.id,name:p.name,eq:p.eq,gar:p.gar,units:u}});
+  var o={n:'PED-'+d.getFullYear()+'-'+String(orders.length+1).padStart(4,'0'),fecha:d.toISOString(),cliente:f.n.value,email:f.e.value,total:total()+taxAmt(),items:items};
+  items.forEach(function(it){byId(it.id).stock-=it.units.length});
+  orders.push(o);try{localStorage.setItem('nodo_pedidos',JSON.stringify(orders))}catch(e){}
+  cart={};
+  $('cbody').innerHTML='<h2>Pedido confirmado</h2><p>Gracias, '+esc(o.cliente)+'. Tu número de pedido es <strong class="m" style="font-family:var(--mono)">'+o.n+'</strong>.</p><ul class="cartlist">'+items.map(function(it){return '<li><div><strong>'+esc(it.name)+'</strong><div class="m">'+it.eq+' · '+it.gar+' meses</div>'+it.units.map(function(c){return '<div class="m">Garantía: '+c+'</div>'}).join('')+'</div><div></div></li>'}).join('')+'</ul><p class="note">Guarda estos códigos. Los necesitas para reclamar la garantía.</p>'+waLink(o)+'<div class="total"><span>Total</span><span>'+money(o.total)+'</span></div><div class="row"><button class="btn" data-close="cartDlg">Cerrar</button></div>';
+  renderGrid();$('cnt').textContent=0;
+}
+function addMonths(d,m){var x=new Date(d);x.setMonth(x.getMonth()+m);return x}
+function verify(code){
+  code=code.trim().toUpperCase();var h='<h3>Resultado de la verificación</h3>';
+  if(!code){$('vres').innerHTML=h+'<div class="note">Escribe un código de garantía para consultarlo.</div>';return}
+  for(var i=0;i<orders.length;i++)for(var j=0;j<orders[i].items.length;j++){var it=orders[i].items[j];
+    if(it.units.indexOf(code)>-1){var buy=new Date(orders[i].fecha),end=addMonths(buy,it.gar),vig=end>=new Date();
+      $('vres').innerHTML=h+'<dl><dt>Estado</dt><dd class="'+(vig?'ok':'bad')+'">'+(vig?'Garantía vigente':'Garantía vencida')+'</dd><dt>Equipo</dt><dd>'+esc(it.name)+'</dd><dt>Cód. equipo</dt><dd>'+it.eq+'</dd><dt>Cód. garantía</dt><dd>'+code+'</dd><dt>Comprado</dt><dd>'+buy.toLocaleDateString('es',MESES_FMT)+'</dd><dt>Vence</dt><dd>'+end.toLocaleDateString('es',MESES_FMT)+'</dd><dt>Pedido</dt><dd>'+orders[i].n+'</dd></dl>';return}}
+  var p=P.filter(function(x){return x.gc===code})[0];
+  if(p){$('vres').innerHTML=h+'<dl><dt>Estado</dt><dd class="ok">Código válido de catálogo</dd><dt>Equipo</dt><dd>'+esc(p.name)+'</dd><dt>Cód. equipo</dt><dd>'+p.eq+'</dd><dt>Garantía</dt><dd>'+p.gar+' meses desde la compra</dd></dl><div class="note" style="margin-top:8px">Este es el código base del modelo. Cada unidad vendida recibe un código propio.</div>';return}
+  $('vres').innerHTML=h+'<dl><dt>Estado</dt><dd class="bad">Código no encontrado</dd></dl><div class="note" style="margin-top:8px">Revisa que el código esté completo, con guiones y sin espacios.</div>';
+}
+document.addEventListener('click',function(e){
+  var t=e.target.closest('button');if(!t)return;
+  if(t.dataset.c){cat=t.dataset.c;renderChips();renderGrid()}
+  if(t.dataset.d)openDetail(+t.dataset.d);
+  if(t.dataset.a){add(+t.dataset.a,1)}
+  if(t.dataset.m)add(+t.dataset.m,-1);
+  if(t.dataset.p)add(+t.dataset.p,1);
+  if(t.dataset.close)$(t.dataset.close).close();
+});
+$('q').addEventListener('input',function(e){q=e.target.value;renderGrid()});
+$('openCart').addEventListener('click',function(){renderCart();$('cartDlg').showModal()});
+$('vf').addEventListener('submit',function(e){e.preventDefault();verify($('vcode').value)});
+document.addEventListener('submit',function(e){if(e.target.id==='co'){e.preventDefault();checkout(e.target)}});
+var DEF={name:'Nodo Computación',title:'Equipos con garantía que puedes verificar',sub:'Cada producto tiene su código de equipo y su código de garantía. Escribe el código de tu garantía y consulta su estado al instante.',foot:'Todos los equipos incluyen su código de garantía.',logo:'',acc:'',theme:'auto',font:'Archivo',r:8,cw:250,codes:true,stock:true,cur:'$',tax:0,wa:'',custom:[]};
+var S=JSON.parse(JSON.stringify(DEF));
+try{var sv=JSON.parse(localStorage.getItem('nodo_cfg')||'{}');for(var kk in sv)S[kk]=sv[kk]}catch(e){}
+S.custom.forEach(function(p){P.push(p)});
+function save(){try{localStorage.setItem('nodo_cfg',JSON.stringify(S))}catch(e){}}
+function lum(h){var n=parseInt(h.slice(1),16),c=[n>>16,(n>>8)&255,n&255].map(function(v){v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*c[0]+.7152*c[1]+.0722*c[2]}
+function apply(){
+  var r=document.documentElement,st=r.style;
+  MONEDA=S.cur||'$';
+  if(S.acc){st.setProperty('--acc',S.acc);st.setProperty('--acc-ink',lum(S.acc)>.4?'#10161c':'#fff')}else{st.removeProperty('--acc');st.removeProperty('--acc-ink')}
+  if(S.theme==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',S.theme);
+  var F={Archivo:"'Archivo',system-ui,sans-serif",Serif:"Georgia,'Times New Roman',serif",Sistema:"system-ui,-apple-system,'Segoe UI',sans-serif",Mono:"'IBM Plex Mono',ui-monospace,Menlo,monospace"};
+  st.setProperty('--sans',F[S.font]||F.Archivo);st.setProperty('--r',S.r+'px');st.setProperty('--cw',S.cw+'px');
+  document.body.classList.toggle('nocodes',!S.codes);document.body.classList.toggle('nostock',!S.stock);
+  $('logo').innerHTML=(S.logo?'<img src="'+S.logo+'" alt="" style="height:32px;vertical-align:middle;margin-right:8px">':'')+esc(S.name);
+  $('hTitle').textContent=S.title;$('hSub').textContent=S.sub;$('foot').textContent=S.foot;document.title=S.name;
+}
+function fillCfg(){document.querySelectorAll('[data-k]').forEach(function(el){var v=S[el.dataset.k];if(el.type==='checkbox')el.checked=!!v;else el.value=(el.dataset.k==='acc'&&!v)?'#0e7bc2':v})}
+function taxAmt(){return total()*(S.tax||0)/100}
+function totals(){var t=total(),ln='<div class="note" style="display:flex;justify-content:space-between"><span>';if(!S.tax)return '<div class="total"><span>Total</span><span>'+money(t)+'</span></div>';return ln+'Subtotal</span><span>'+money(t)+'</span></div>'+ln+'Impuesto ('+S.tax+'%)</span><span>'+money(taxAmt())+'</span></div><div class="total"><span>Total</span><span>'+money(t+taxAmt())+'</span></div>'}
+function waLink(o){if(!S.wa)return '';var t='Pedido '+o.n+' - '+o.cliente+'\n'+o.items.map(function(i){return i.units.length+'x '+i.name+' ('+i.eq+')'}).join('\n')+'\nTotal: '+money(o.total);return '<a class="btn" style="display:block;text-align:center;text-decoration:none;margin-bottom:8px" target="_blank" rel="noopener" href="https://wa.me/'+S.wa.replace(/\D/g,'')+'?text='+encodeURIComponent(t)+'">Enviar pedido por WhatsApp</a>'}
+function renderCustom(){
+  var cs=P.map(function(p){return p.cat}).filter(function(c,i,a){return a.indexOf(c)===i});
+  $('cats').innerHTML=cs.map(function(c){return '<option value="'+esc(c)+'">'}).join('');
+  $('cl').innerHTML=S.custom.length?S.custom.map(function(p){return '<li><span>'+esc(p.name)+' · '+p.eq+'</span><button class="chip" data-del="'+p.id+'">Eliminar</button></li>'}).join(''):'<li class="note">Aún no agregaste productos propios.</li>';
+}
+function addProduct(){
+  var n=$('pn').value.trim(),pr=parseFloat($('pp').value),c=$('pc').value.trim()||'Otros';
+  if(!n||isNaN(pr)){$('pmsg').textContent='Escribe el nombre y el precio para agregar el producto.';return}
+  var pre=c.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Za-z]/g,'').slice(0,3).toUpperCase().padEnd(3,'X'),mx=0;
+  P.forEach(function(p){if(p.eq.indexOf('EQ-'+pre+'-')===0)mx=Math.max(mx,parseInt(p.eq.slice(-4)))});
+  var num=String(mx+1).padStart(4,'0');
+  var sp=$('px').value.split('\n').map(function(l){var i=l.indexOf(':');return i>0?[l.slice(0,i).trim(),l.slice(i+1).trim()]:null}).filter(Boolean);
+  var p={id:Date.now(),cat:c,name:n,brand:$('pb').value.trim()||'-',price:pr,stock:parseInt($('ps').value)||0,gar:parseInt($('pg').value)||0,eq:'EQ-'+pre+'-'+num,gc:'GAR-'+pre+'-'+num,sku:'SKU-'+pre+'-'+num,specs:sp};
+  P.push(p);S.custom.push(p);save();
+  ['pn','pb','pc','pp','px'].forEach(function(i){$(i).value=''});
+  $('pmsg').textContent='Producto agregado. Código de equipo '+p.eq+', código de garantía '+p.gc+'.';
+  renderChips();renderGrid();renderCustom();
+}
+document.addEventListener('input',function(e){var k=e.target.dataset.k;if(!k)return;var t=e.target.type,v=t==='checkbox'?e.target.checked:(t==='range'||t==='number')?+e.target.value:e.target.value;S[k]=v;save();apply();if(k==='cur'||k==='tax'){renderGrid();renderCart()}});
+document.addEventListener('click',function(e){
+  var t=e.target.closest('button');if(!t)return;var d=t.dataset;
+  if(d.tab){document.querySelectorAll('.pane').forEach(function(p){p.classList.toggle('on',p.id===d.tab)});document.querySelectorAll('[data-tab]').forEach(function(b){b.setAttribute('aria-pressed',b===t)})}
+  if(d.sw){S.acc=d.sw;save();apply();fillCfg()}
+  if(d.nologo){S.logo='';save();apply()}
+  if(d.addp)addProduct();
+  if(d.del){var id=+d.del;S.custom=S.custom.filter(function(p){return p.id!==id});P=P.filter(function(p){return p.id!==id});delete cart[id];cat='Todos';save();renderChips();renderGrid();renderCart();renderCustom()}
+  if(d.reset){var c=S.custom;S=JSON.parse(JSON.stringify(DEF));S.custom=c;save();apply();fillCfg();renderGrid();renderCart()}
+});
+$('openCfg').addEventListener('click',function(){fillCfg();renderCustom();$('cfgDlg').showModal()});
+$('logoFile').addEventListener('change',function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var h=Math.min(64,im.height),w=im.width*h/im.height,c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(im,0,0,w,h);S.logo=c.toDataURL('image/png');save();apply()};im.src=r.result};r.readAsDataURL(f)});
+var K={
+LAP:'<rect x="42" y="14" width="76" height="50" rx="4" class="f"/><rect x="48" y="20" width="64" height="38" rx="2" class="s"/><path d="M22 70h116l-8 10H30z" class="k"/>',
+DES:'<rect x="56" y="8" width="48" height="84" rx="5" class="f"/><circle cx="80" cy="24" r="6" class="s"/><path d="M66 44h28M66 52h28M66 60h28" class="l"/><rect x="66" y="74" width="28" height="6" rx="2" class="k"/>',
+CPU:'<rect x="48" y="18" width="64" height="64" rx="6" class="f"/><rect x="62" y="32" width="36" height="36" rx="3" class="k"/><path d="M60 18v-8M80 18v-8M100 18v-8M60 82v8M80 82v8M100 82v8M48 36h-8M48 50h-8M48 64h-8M112 36h8M112 50h8M112 64h8" class="l"/>',
+GPU:'<rect x="20" y="26" width="120" height="44" rx="5" class="f"/><circle cx="58" cy="48" r="14" class="s"/><circle cx="102" cy="48" r="14" class="s"/><rect x="30" y="70" width="60" height="8" class="k"/>',
+RAM:'<rect x="18" y="34" width="124" height="34" rx="3" class="f"/><rect x="28" y="42" width="16" height="14" class="k"/><rect x="52" y="42" width="16" height="14" class="k"/><rect x="76" y="42" width="16" height="14" class="k"/><rect x="100" y="42" width="16" height="14" class="k"/><path d="M28 68v8M44 68v8M60 68v8M76 68v8M92 68v8M108 68v8M124 68v8" class="l"/>',
+SSD:'<rect x="36" y="18" width="88" height="64" rx="6" class="f"/><rect x="48" y="30" width="40" height="22" rx="2" class="k"/><circle cx="108" cy="66" r="4" class="s"/><path d="M48 66h40" class="l"/>',
+MON:'<rect x="26" y="12" width="108" height="64" rx="4" class="f"/><rect x="33" y="19" width="94" height="50" rx="2" class="s"/><path d="M80 76v10M60 88h40" class="l"/>',
+TEC:'<rect x="14" y="28" width="132" height="46" rx="5" class="f"/><path d="M26 40h108M26 52h108M26 64h108" class="d"/>',
+RED:'<rect x="26" y="52" width="108" height="26" rx="5" class="f"/><path d="M50 52L38 22M110 52l12-30" class="l"/><circle cx="48" cy="65" r="3" class="k"/><circle cx="62" cy="65" r="3" class="k"/><path d="M100 65h24" class="l"/>',
+X:'<rect x="40" y="20" width="80" height="60" rx="6" class="f"/><path d="M40 44l40-24 40 24M80 44v36" class="l"/>'};
+function art(p){var k=p.eq.split('-')[1];return '<svg viewBox="0 0 160 100" role="img" aria-label="Ilustración de '+esc(p.name)+'">'+(K[k]||K.X)+'</svg>'}
+$('heroImg').innerHTML='<svg viewBox="0 0 320 130" role="img" aria-label="Monitor, laptop y torre de computadora"><g transform="translate(-20,10) scale(1.1)">'+K.MON+'</g><g transform="translate(110,22) scale(.9)">'+K.LAP+'</g><g transform="translate(200,0) scale(1.15)">'+K.DES+'</g><path d="M10 114H310" class="l"/></svg>';
+apply();
+renderChips();renderGrid();renderCart();
+</script>
+</body>
+</html>
